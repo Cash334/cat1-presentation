@@ -1,0 +1,48 @@
+<!-- THIS IS QUESTION III OF TASK 5-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add</title>
+    <script defer>
+        document.addEventListener("DOMContentLoaded",()=>{
+            const form = document.querySelector(".add-form");
+            const result_div = document.querySelector(".results");
+
+            form.addEventListener("submit",(e)=>{
+                e.preventDefault();
+
+                const data = Object.fromEntries(new FormData(form));
+
+                const num1 = Number(data.num1);
+                const num2 = Number(data.num2);
+
+                const valid_num1 = !isNaN(num1) && data.num1 !== "";
+                const valid_num2 = !isNaN(num2) && data.num2 !== "";
+
+                if(!valid_num1 || !valid_num2){
+                    return result_div.innerHTML = `<b>num1 and num2 must be submitted and must be numbers</b>` 
+                };
+
+                return result_div.innerHTML = `<h2>${num1} + ${num2} = ${num1 + num2}</h2>`
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="add-div">
+        <form class="add-form">
+            <label>Enter num1 : <input type="number" name="num1" id="num1-input"></label> <br> <br>
+            <label>Enter num2 : <input type="number" name="num2" id="num2-input"></label> <br> <br>
+            <hr>
+            <button type="submit">Add</button>
+        </form>
+        <div class="results">
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!--THIS IS QUESTION IV OF TASK 5 -->
+<!-- THIS IS ALSO DEMONSTATES TASK 6 -->
+ <!--THIS ALSO DEMONSTRATES TASK 4-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display</title>
+    <script defer>
+        document.addEventListener("DOMContentLoaded",()=>{
+            const form = document.querySelector(".display-back-form");
+            const result_div = document.querySelector(".results-div");
+
+            form.addEventListener("submit",(e)=>{
+                e.preventDefault();
+
+                const data = Object.fromEntries(new FormData(form));
+
+                const message = data.anyKey;
+
+                if(message.length !== 0){
+                    return result_div.innerHTML = `<h3>${message}</h3>`
+                };
+
+                return result_div.innerHTML = `<b>The Form must be filled for a result to be displayed!</b>`
+            
+            });
+
+        });
+    </script>
+    <style>
+        .display-back-form{
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="main-echo" style="height: fit-content; width: fit-content; border: 1px solid gray; padding: 20px;">
+        <form class="display-back-form">
+            <label for="key-input">press a key</label><br>
+            <input type="text" name="anyKey" id="key-input" placeholder="enter anythng here..." required> <br> <br>
+            <hr>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="results-div">
+
+        </div>
+    </div>
+    
+</body>
+</html>

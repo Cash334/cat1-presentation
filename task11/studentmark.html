@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Mark</title>
+    <link rel="stylesheet" href="./style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded",()=>{
+            const form = document.querySelector(".mark-form");
+            const results_div = document.querySelector(".result-div");
+            const error_div = document.querySelector(".errors-div");
+
+            form.addEventListener("submit",(e)=>{
+                e.preventDefault();
+
+                const data = Object.fromEntries(new FormData(form));
+
+                const name = data.name;
+                const admission = data.admission;
+
+                delete data.name;
+                delete data.admission;
+
+                const v_name = name && name.trim().length > 0;
+                const v_admission = admission && !isNaN(admission);
+
+                const units = data;
+
+                const report = ()=>{
+                    let total = 0;
+                    const comment = [];
+
+                    for(const [unit, score] of Object.entries(units)){
+                        if(!isNaN(score) && score !== "" && score){
+                            total += Number(score);
+                        }else{
+                            comment.push(`${unit} was assigned an ivalid mark`);
+                        }
+                    };
+
+                    return {total, comment};
+
+                };
+
+                const registry = {
+                    "A" : {min : 79,max : 101},
+                    "B" : {min : 69, max : 80},
+                    "C" : {min : 59, max : 70},
+                    "D" : {min : 39, max : 60},
+                    "E" : {min : -1, max: 40}
+                };
+
+                const {total, comment} = report();
+
+                if(comment.length !== 0){
+                    let error = "";
+
+                    for(const message of comment){
+                        const item = `<b>${message}</b><br>`;
+
+                        error += item;
+                    }
+
+                    error_div.innerHTML = error;
+                };
+
+                const avg = (total / 4).toFixed(2);
+
+                const grade = ()=>{
+
+                    let graded = "";
+
+                    for(const [grade, constraints] of Object.entries(registry)){                        
+
+                        let [min, max] = Object.entries(constraints);
+                        min = min[1];
+                        max = max[1];
+
+                        if(min < avg && max > avg){
+                            graded = grade;
+                        }else{
+                            continue;
+                        };
+                    }
+            
+                    return graded
+
+                }
+                
+                results_div.innerHTML = `
+                <div class="errors-div-div>"
+                    <h2>${name}</h2>
+                    <h2>ADM: ${admission}</h2>
+                    <hr>
+                    <h3>Total Marks:  ${total}</h3>
+                    <h3>Averag Mark:  ${avg}</h3>
+                    <h2>Grade:  ${grade()}</h2>
+                </div>
+                `
+            
+            });
+
+        })
+
+    </script>
+</head>
+<body>
+    <div class="main-student-mark-div">
+        
+        <div>
+            <h2>CALCULATE STUDENT MARKS HERE</h2>
+            <div class="errors-div">
+
+            </div><br>
+
+            <form class="mark-form">
+                <div class="student-data">
+                    <h2>student data</h2>
+                    <br>
+                    <hr>
+                    <label for="name-input">Name</label> <br>
+                    <input type="text" name="name" id="name-input" required> <br> <br>
+
+                    <label for="admission-number-input">Admission Number</label><br>
+                    <input type="number" name="admission" id="admission-number-input" required><br><br>
+                </div>
+
+                <div class="performance-data">
+                    <h2>performance data</h2><br>
+                    <hr>
+                    <label for="maths-input">Mathematics</label> <br>
+                    <input type="number" name="maths" id="maths-input"> <br><br>
+
+                    <label for="bio-input">Biology</label><br>
+                    <input type="number" name="bio" id="bio-input"><br><br>
+
+                    <label for="chem-input">Chemistry</label><br>
+                    <input type="number" name="chem" id="chem-input"><br><br>
+
+                    <label for="phy-input">Physics</label> <br>
+                    <input type="number" name="phy" id="phy-input"> <br><br>
+                </div>
+                <hr><br>
+
+                <button type="submit" id="submit-btn">Calculate</button>
+            </form>
+        </div>
+
+        <div class="result-div-div">
+            <h1>RESULTS</h1><br>
+            <hr>
+            <div class="result-div">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
